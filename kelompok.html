@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>UMKM Mart Online - Kelompok Kami</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #0d041f 50%, #050308 100%);
+            color: #f0eef7;
+            min-height: 100vh;
+        }
+
+        /* Warna Tema: Ungu & Hitam */
+        :root {
+            --purple-primary: #8b5cf6;
+            --purple-dark: #5b21b6;
+            --purple-glow: #a78bfa;
+            --purple-soft: #c4b5fd;
+            --purple-deep: #2e1065;
+            --black-bg: #030014;
+            --black-card: #0f0a1a;
+            --black-card-hover: #1a122f;
+            --gray-muted: #a1a1aa;
+            --success: #22c55e;
+        }
+
+        /* Scrollbar Custom */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a0f2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--purple-primary);
+            border-radius: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            background: rgba(3, 0, 20, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 18px 0;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(145deg, var(--purple-primary), #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c084fc, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--purple-glow);
+        }
+
+        /* ========== HERO SECTION KELOMPOK ========== */
+        .hero-kelompok {
+            padding: 50px 0 30px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            padding: 6px 16px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            color: var(--purple-soft);
+            margin-bottom: 20px;
+        }
+
+        .hero-kelompok h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #d8b4fe, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .hero-kelompok p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ========== KARTU KELOMPOK ========== */
+        .section-title {
+            font-size: 1.8rem;
+            margin: 40px 0 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 5px solid var(--purple-primary);
+            padding-left: 20px;
+        }
+
+        .section-title i {
+            color: var(--purple-primary);
+        }
+
+        .kelompok-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        /* Kartu anggota */
+        .member-card {
+            background: var(--black-card);
+            border-radius: 28px;
+            border: 1px solid #2d1a5c;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .member-card:hover {
+            transform: translateX(8px);
+            border-color: var(--purple-primary);
+            box-shadow: 0 10px 25px -8px rgba(139, 92, 246, 0.3);
+        }
+
+        .member-inner {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 24px 32px;
+            flex-wrap: wrap;
+        }
+
+        .member-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--purple-primary);
+            min-width: 70px;
+            text-align: center;
+            font-family: 'Poppins', monospace;
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 60px;
+            padding: 8px 0;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .member-name i {
+            color: var(--purple-glow);
+            font-size: 1.2rem;
+        }
+
+        .member-nim {
+            font-size: 1rem;
+            color: var(--purple-soft);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .member-nim i {
+            font-size: 0.9rem;
+            color: #a78bfa;
+        }
+
+        .member-role {
+            background: linear-gradient(135deg, #2e1a5e, #1b0f3a);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--purple-glow);
+            white-space: nowrap;
+        }
+
+        /* Info Jurusan & Judul */
+        .info-jurusan {
+            background: linear-gradient(145deg, #0f0a1a, #0c0718);
+            border-radius: 32px;
+            padding: 32px;
+            margin: 20px 0 40px;
+            border: 1px solid #4a2d8a;
+            text-align: center;
+        }
+
+        .jurusan-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--purple-glow);
+            margin-bottom: 8px;
+        }
+
+        .jurusan-detail {
+            font-size: 1.2rem;
+            color: #ddd;
+        }
+
+        .judul-proposal {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 60px;
+            padding: 14px 28px;
+            margin-top: 20px;
+            display: inline-block;
+            border: 1px dashed var(--purple-primary);
+        }
+
+        .judul-proposal h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .judul-proposal p {
+            font-size: 1rem;
+            color: #c4b5fd;
+            margin-top: 6px;
+        }
+
+        /* Tombol kembali */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(95deg, #8b5cf6, #7c3aed);
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            margin: 20px 0 40px;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Statistik kelompok */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 30px 0 40px;
+        }
+
+        .stat-card {
+            background: rgba(15, 10, 26, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #2e2352;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--purple-glow);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #b9b0d4;
+            margin-top: 6px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #2a1a4a;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 680px) {
+            .member-inner { padding: 20px; }
+            .member-name { font-size: 1.1rem; }
+            .member-number { font-size: 1.8rem; min-width: 50px; }
+            .hero-kelompok h2 { font-size: 1.8rem; }
+            .container { padding: 0 20px; }
+            .nav-links { gap: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-inner">
+        <div class="logo">
+            <i class="fas fa-store logo-icon"></i>
+            <h1>UMKM Mart Online</h1>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Beranda</a>
+            <a href="UMKM.html">Produk UMKM</a>
+            <a href="pembayaran.html">Keranjang</a>
+            <a href="kelompok.html" class="active">Kelompok</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="hero-kelompok">
+        <div class="hero-badge"><i class="fas fa-users"></i> Tim Pengembang</div>
+        <h2><i class="fas fa-graduation-cap"></i> Kelompok Kewirausahaan</h2>
+        <p>Perkenalan kelompok kewirausahaan.</p>
+    </div>
+
+    <!-- Info Jurusan dan Judul -->
+    <div class="info-jurusan">
+        <div class="jurusan-title">
+            <i class="fas fa-laptop-code"></i> Teknik Informatika
+        </div>
+        <div class="jurusan-detail">
+            Fakultas Teknik · Universitas Sam Ratulangi Manado
+        </div>
+        <div class="judul-proposal">
+            <h3><i class="fas fa-file-alt"></i>KEWIRAUSAHAAN UKM MART </h3>
+            <p>“UMKM Mart Online” — Platform Digital Penjualan Produk UMKM Berbasis Website</p>
+        </div>
+    </div>
+
+    <!-- Daftar Anggota Kelompok -->
+    <div class="section-title">
+        <i class="fas fa-id-card"></i> Daftar Anggota Kelompok
+    </div>
+
+    <div class="kelompok-grid">
+        <!-- Anggota 1 -->
+        <div class="member-card">
+            <div class="member-inner">
+                <div class="member-info">
+                    <div class="member-name">
+                        <i class="fas fa-user-circle"></i> Trifena Sweetly Kasenda
+                    </div>
+                    <div class="member-nim">
+                        <i class="fas fa-qrcode"></i> NIM: 240211060103
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anggota 2 -->
+        <div class="member-card">
+            <div class="member-inner">
+                <div class="member-info">
+                    <div class="member-name">
+                        <i class="fas fa-user-circle"></i> Rebekah Annavael Tahendung
+                    </div>
+                    <div class="member-nim">
+                        <i class="fas fa-qrcode"></i> NIM: 240211060096
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anggota 3 -->
+        <div class="member-card">
+            <div class="member-inner">
+                <div class="member-info">
+                    <div class="member-name">
+                        <i class="fas fa-user-circle"></i> Nadila Zahra Rumondor
+                    </div>
+                    <div class="member-nim">
+                        <i class="fas fa-qrcode"></i> NIM: 240211060118
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anggota 4 -->
+        <div class="member-card">
+            <div class="member-inner">
+                <div class="member-info">
+                    <div class="member-name">
+                        <i class="fas fa-user-circle"></i> Fesdio Kenry Takumansang
+                    </div>
+                    <div class="member-nim">
+                        <i class="fas fa-qrcode"></i> NIM: 240211060086
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anggota 5 -->
+        <div class="member-card">
+            <div class="member-inner">
+                <div class="member-info">
+                    <div class="member-name">
+                        <i class="fas fa-user-circle"></i> Raja Kiroyan
+                    </div>
+                    <div class="member-nim">
+                        <i class="fas fa-qrcode"></i> NIM: 240211060054
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tombol Kembali ke Beranda -->
+    <div style="text-align: center;">
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Kembali ke Beranda UMKM Mart
+        </a>
+    </div>
+</div>
+
+<footer>
+    <p><i class="fas fa-heart" style="color: #c084fc;"></i> UMKM Mart Online — Pasar Digital untuk Indonesia Maju</p>
+    <p style="margin-top: 12px; font-size: 0.8rem;">© 2026 • Teknik Informatika • Universitas Sam Ratulangi Manado</p>
+    <p style="margin-top: 8px; font-size: 0.75rem; color: #7f6bb0;">Kelas Kewirausahaan E • Proposal UMKM Mart Online</p>
+</footer>
+
+</body>
+</html>
