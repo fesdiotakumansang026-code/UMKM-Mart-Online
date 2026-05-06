@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMKM Mart - Keranjang & Pembayaran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 20%, #050011, #000000);
+            color: #f3eefc;
+        }
+        :root {
+            --purple-main: #8b5cf6;
+            --card-bg: #0f0a1c;
+        }
+        .navbar {
+            background: #070012e6;
+            backdrop-filter: blur(12px);
+            padding: 18px 32px;
+            border-bottom: 1px solid #4a2f8a;
+            display: flex;
+            justify-content: space-between;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+        .cart-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 32px;
+        }
+        .cart-items {
+            background: var(--card-bg);
+            border-radius: 36px;
+            padding: 28px;
+            border: 1px solid #2a1a55;
+        }
+        .cart-item {
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid #2e2352;
+            padding: 20px 0;
+        }
+        .cart-item-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
+        .item-details { flex: 1; }
+        .item-price { color: var(--purple-main); font-weight: bold; }
+        .qty-control { display: flex; gap: 12px; align-items: center; margin-top: 10px; }
+        .qty-btn-cart {
+            background: #2e1f5e;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+        }
+        .summary-card {
+            background: var(--card-bg);
+            border-radius: 36px;
+            padding: 28px;
+            height: fit-content;
+            border: 1px solid #4c2d91;
+            position: sticky;
+            top: 100px;
+        }
+        .btn-checkout-final {
+            background: linear-gradient(95deg, #8b5cf6, #b77cff);
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 60px;
+            font-weight: bold;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 24px;
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 60px;
+        }
+        @media (max-width: 800px) {
+            .cart-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div><a href="index.html" style="color:white; text-decoration:none;"><i class="fas fa-arrow-left"></i> Kembali Belanja</a></div>
+    <div style="font-weight:bold;">🛒 UMKM Mart - Checkout</div>
+</div>
+<div class="container">
+    <div class="cart-layout">
+        <div class="cart-items" id="cartItemsContainer">
+            <!-- JS akan render disini -->
+        </div>
+        <div class="summary-card" id="summaryBox">
+            <h3><i class="fas fa-receipt"></i> Ringkasan Belanja</h3>
+            <div id="summaryDetail"></div>
+            <button id="payNowBtn" class="btn-checkout-final"><i class="fas fa-credit-card"></i> Konfirmasi Pembayaran</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem('umkmCart')) || [];
+
+    function saveCart() { localStorage.setItem('umkmCart', JSON.stringify(cart)); renderCart(); }
+
+    function renderCart() {
+        const container = document.getElementById('cartItemsContainer');
+        const summaryDiv = document.getElementById('summaryDetail');
+        if (!cart.length) {
+            container.innerHTML = `<div class="empty-cart"><i class="fas fa-shopping-bag" style="font-size:3rem;"></i><h3>Keranjang belanja kosong</h3><a href="UMKM.html" style="color:#a78bfa;">Lihat Produk UMKM →</a></div>`;
+            summaryDiv.innerHTML = `<p>Total: Rp 0</p><p>Belum ada item</p>`;
+            return;
+        }
+        let total = 0;
+        let html = '';
+        cart.forEach((item, idx) => {
+            const subtotal = item.price * item.qty;
+            total += subtotal;
+            html += `
+                <div class="cart-item">
+                    <div class="cart-item-img"><img src="${item.image || 'https://picsum.photos/id/26/90/90'}" onerror="this.src='https://picsum.photos/id/20/90/90'"></div>
+                    <div class="item-details">
+                        <h4>${item.name}</h4>
+                        <p class="item-price">Rp ${item.price.toLocaleString('id-ID')}</p>
+                        <div class="qty-control">
+                            <button class="qty-btn-cart" data-id="${item.id}" data-delta="-1">-</button>
+                            <span>${item.qty}</span>
+                            <button class="qty-btn-cart" data-id="${item.id}" data-delta="1">+</button>
+                            <button class="qty-btn-cart" data-id="${item.id}" data-remove="1" style="background:#6b2e4a;">Hapus</button>
+                        </div>
+                    </div>
+                    <div>Rp ${subtotal.toLocaleString('id-ID')}</div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        summaryDiv.innerHTML = `<div style="margin:20px 0;"><p>Total Item: ${cart.reduce((s,i)=> s+i.qty,0)}</p><h2 style="color:#c084fc;">Rp ${total.toLocaleString('id-ID')}</h2><p><i class="fas fa-truck"></i> Gratis ongkir</p></div>`;
+        
+        document.querySelectorAll('.qty-btn-cart').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.dataset.id);
+                const delta = btn.dataset.delta ? parseInt(btn.dataset.delta) : null;
+                const remove = btn.dataset.remove === '1';
+                const idxItem = cart.findIndex(i => i.id === id);
+                if (idxItem === -1) return;
+                if (remove) {
+                    cart.splice(idxItem, 1);
+                } else if (delta === -1) {
+                    if (cart[idxItem].qty > 1) cart[idxItem].qty--;
+                    else cart.splice(idxItem, 1);
+                } else if (delta === 1) {
+                    cart[idxItem].qty++;
+                }
+                saveCart();
+            });
+        });
+    }
+
+    document.getElementById('payNowBtn')?.addEventListener('click', () => {
+        if(cart.length === 0) { alert("Keranjang kosong, yuk belanja dulu!"); return; }
+        alert("✅ Pembayaran Berhasil!\nTerima kasih telah berbelanja di UMKM Mart Online.\nPesanan akan diproses oleh penjual.");
+        localStorage.removeItem('umkmCart');
+        cart = [];
+        renderCart();
+        window.location.href = 'index.html';
+    });
+
+    renderCart();
+</script>
+</body>
+</html>
